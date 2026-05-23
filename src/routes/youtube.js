@@ -85,7 +85,7 @@ router.get('/revenue/canales', async (req, res) => {
         df.mes,
         df.nombre_mes,
         ds.id_subcuenta,
-        ds.nombre_subcuenta                                AS canal,
+        ds.nombre_subcuenta                              AS canal,
         dc.id_cuenta,
         dc.nombre_cuenta                                AS cuenta,
         ROUND(SUM(hm.revenue_total)::numeric, 2) AS revenue_total,
@@ -100,7 +100,7 @@ router.get('/revenue/canales', async (req, res) => {
       GROUP BY df.anio, df.mes, df.nombre_mes,
                ds.id_subcuenta, ds.nombre_subcuenta,
                dc.id_cuenta, dc.nombre_cuenta
-      ORDER BY df.anio, df.mes, dc.nombre_cuenta, ds._subcuenta
+      ORDER BY df.anio, df.mes, dc.nombre_cuenta, ds.id_subcuenta
     `, [anio || null, id_cuenta || null]);
     res.json(result.rows);
   } catch (err) {

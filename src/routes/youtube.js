@@ -72,6 +72,22 @@ router.get('/revenue/mensual', async (req, res) => {
   }
 });
 
+// GET /api/youtube/anios
+router.get('/anios', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT DISTINCT df.anio
+      FROM hechos_metricas hm
+      JOIN dim_fecha df ON hm.id_fecha = df.id_fecha
+      ORDER BY df.anio DESC
+    `);
+    res.json(result.rows.map(r => r.anio));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─────────────────────────────────────────
 // GET /api/youtube/revenue/canales
 // Parámetros opcionales: ?anio=2024&id_cuenta=1

@@ -81,6 +81,7 @@ router.get('/anios', async (req, res) => {
       JOIN dim_fecha df ON hm.id_fecha = df.id_fecha
       ORDER BY df.anio DESC
     `);
+    // Devolver array de números, no array de objetos
     res.json(result.rows.map(r => r.anio));
   } catch (err) {
     console.error(err);

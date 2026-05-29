@@ -285,3 +285,36 @@ router.delete('/notas/:id', verificarToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ─────────────────────────────────────────
+// PATCH /api/auth/usuarios/:id
+// Activar o desactivar un usuario
+// Solo jefes
+// ─────────────────────────────────────────
+router.patch('/usuarios/:id', verificarToken, async (req, res) => {
+  if (req.usuario.rol !== 'jefe') {
+    return res.status(403).json({ error: 'Sin permisos' });
+  }
+
+  const { id }     = req.params;
+  const { activo } = req.body;
+
+  try {
+    const result = await authPool.query(
+      `UPDATE usuarios
+       SET activo = $1
+       WHERE id = $2
+       RETURNING id, nombre, email, rol, activo`,
+      [activo, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});

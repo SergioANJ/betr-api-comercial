@@ -1,4 +1,14 @@
+### Login en Local (Para pruebas en tu PC)
 POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "sergiojimenez@betrmedia.com",
+  "password": "tu_contraseña_aquí"
+}
+
+### Login en Producción (Railway)
+POST https://betr-api-comercial-production.up.railway.app/api/auth/login
 Content-Type: application/json
 
 {
